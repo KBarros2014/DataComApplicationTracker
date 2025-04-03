@@ -107,4 +107,5 @@ If you prefer to run the frontend manually:
 - Click "Advanced" and then "Proceed" to continue to the application
 
 
-https://github.com/KBarros2014/DataComApplicationTracker/blob/main/DataComApplicationTracker.Server/Screenshot%202025-04-04%20104835.png
+
+ <img src="https://github.com/KBarros2014/DataComApplicationTracker/blob/main/DataComApplicationTracker.Server/Screenshot%202025-04-04%20104835.png" width="auto" title="hover text">
