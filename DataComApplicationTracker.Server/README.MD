@@ -106,3 +106,5 @@ If you prefer to run the frontend manually:
 - These are normal in a development environment
 - Click "Advanced" and then "Proceed" to continue to the application
 
+
+ <img src="../master/DataComApplicationTracker.Server\Screenshot 2025-04-04 104835.png" width="auto" title="hover text">
