@@ -1,15 +1,46 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Application, ApplicationService } from '../../services/application.service';
-import { DatePipe } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Application, ApplicationService, ApplicationStatus } from '../../services/application.service';
+import { DatePipe, CommonModule } from '@angular/common';
+
+// Material imports
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+
+// Date adapter imports
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-application-form',
   templateUrl: './application-form.component.html',
   styleUrls: ['./application-form.component.css'],
-  providers: [DatePipe],
-  standalone: false  // Explicitly set to false
+
+  providers: [
+    DatePipe,
+    provideNativeDateAdapter() // Add the date adapter provider
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatIconModule
+  ]
 })
 export class ApplicationFormComponent implements OnInit {
   applicationForm: FormGroup;
@@ -17,6 +48,15 @@ export class ApplicationFormComponent implements OnInit {
   applicationId: number | null = null;
   loading = false;
   error: string | null = null;
+
+  // Updated status options to match backend enum
+  statusOptions = [
+    { value: ApplicationStatus.Applied, label: 'Applied' },
+    { value: ApplicationStatus.InReview, label: 'In Review' },
+    { value: ApplicationStatus.Interview, label: 'Interview' },
+    { value: ApplicationStatus.Rejected, label: 'Rejected' },
+    { value: ApplicationStatus.Accepted, label: 'Accepted' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +68,10 @@ export class ApplicationFormComponent implements OnInit {
     this.applicationForm = this.fb.group({
       companyName: ['', Validators.required],
       position: ['', Validators.required],
-      status: ['Applied', Validators.required],
+      jobDescription: [''],
+      location: [''],
+      outcome: [false],
+      status: [ApplicationStatus.Applied, Validators.required],
       dateApplied: [new Date(), Validators.required]
     });
   }
@@ -59,6 +102,9 @@ export class ApplicationFormComponent implements OnInit {
         this.applicationForm.patchValue({
           companyName: application.companyName,
           position: application.position,
+          jobDescription: application.jobDescription || '',
+          location: application.location || '',
+    
           status: application.status,
           dateApplied: dateAppliedValue
         });
@@ -83,18 +129,26 @@ export class ApplicationFormComponent implements OnInit {
     // Create application object from form
     const formValues = this.applicationForm.value;
 
-    // Format the date to ISO string for API
+    // Format the date for API
     const dateValue = formValues.dateApplied;
-    const dateApplied = this.datePipe.transform(dateValue, 'yyyy-MM-dd') || '';
+    const dateApplied = dateValue instanceof Date ? dateValue.toISOString() : dateValue;
 
     const application: Partial<Application> = {
       companyName: formValues.companyName || '',
       position: formValues.position || '',
-      status: formValues.status || '',
+      jobDescription: formValues.jobDescription || '',
+      location: formValues.location || '',
+      
+      status: formValues.status,
       dateApplied: dateApplied
     };
 
+    console.log('Submitting application:', application);
+
     if (this.isEditMode && this.applicationId) {
+      // If in edit mode, add the ID
+      application.id = this.applicationId;
+
       // Update existing application
       this.applicationService.updateApplication(this.applicationId, application).subscribe({
         next: () => {
@@ -109,17 +163,22 @@ export class ApplicationFormComponent implements OnInit {
       });
     } else {
       // Add new application
-      this.applicationService.addApplication(application).subscribe({
+      this.applicationService.createApplication(application).subscribe({
         next: () => {
           this.loading = false;
           this.router.navigate(['/applications']);
         },
         error: (err: any) => {
           console.error('Error adding application:', err);
-          this.error = `Failed to add application: ${err.message}`;
+          this.error = `Failed to add application: ${err.message || 'Unknown error'}`;
+          console.error('Error details:', err);
           this.loading = false;
         }
       });
     }
+  }
+
+  cancel(): void {
+    this.router.navigate(['/applications']);
   }
 }

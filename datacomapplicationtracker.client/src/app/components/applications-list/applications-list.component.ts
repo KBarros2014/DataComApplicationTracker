@@ -1,46 +1,80 @@
 import { Component, OnInit } from '@angular/core';
-import { Application, ApplicationService } from '../../services/application.service';
+import { Application, ApplicationService, ApplicationStatus } from '../../services/application.service';
+import { CommonModule, DatePipe } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-applications-list',
   templateUrl: './applications-list.component.html',
   styleUrls: ['./applications-list.component.css'],
-  standalone: false  // Explicitly set to false
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    RouterModule,
+    DatePipe
+  ]
 })
 export class ApplicationsListComponent implements OnInit {
   applications: Application[] = [];
-  loading = true;
+  loading = false;
   error: string | null = null;
 
   constructor(private applicationService: ApplicationService) { }
 
   ngOnInit(): void {
-    this.fetchApplications();
+    this.loadApplications();
   }
 
-  fetchApplications(): void {
+  loadApplications(): void {
     this.loading = true;
-    this.error = null;
-    console.log('Fetching applications...');
-
     this.applicationService.getApplications().subscribe({
-      next: (data: Application[]) => {
-        console.log('Applications data received:', data);
+      next: (data) => {
         this.applications = data;
+        console.log(data)
         this.loading = false;
       },
-      error: (err: any) => {
-        console.error('Error fetching applications:', err);
-        this.error = `Failed to load applications: ${err.message}`;
+      error: (err) => {
+        console.error('Error loading applications:', err);
+        this.error = 'Failed to load applications. Please try again later.';
         this.loading = false;
       }
     });
   }
 
-  updateStatus(application: Application): void {
-    this.applicationService.updateApplication(application.id, { status: application.status }).subscribe({
-      next: () => console.log(`Status updated for application ${application.id}`),
-      error: (err: any) => console.error('Error updating status:', err)
-    });
+  getStatusLabel(status: ApplicationStatus): string {
+    switch (status) {
+      case ApplicationStatus.Applied:
+        return 'Applied';
+      case ApplicationStatus.InReview:
+        return 'In Review';
+      case ApplicationStatus.Interview:
+        return 'Interview';
+      case ApplicationStatus.Rejected:
+        return 'Rejected';
+      case ApplicationStatus.Accepted:
+        return 'Accepted';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  deleteApplication(id: number): void {
+    if (confirm('Are you sure you want to delete this application?')) {
+      this.applicationService.deleteApplication(id).subscribe({
+        next: () => {
+          this.loadApplications(); // Reload the list
+        },
+        error: (err) => {
+          console.error('Error deleting application:', err);
+          this.error = 'Failed to delete application. Please try again later.';
+        }
+      });
+    }
   }
 }

@@ -1,4 +1,3 @@
-
 .page-title {
   margin-bottom: 20px;
   font-size: 24px;
@@ -8,6 +7,56 @@
 .applications-table {
   width: 100%;
   margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+  .applications-table th,
+  .applications-table td {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+  }
+
+  .applications-table th {
+    background-color: #f5f5f5;
+    font-weight: 500;
+  }
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Status colors based on the enum values */
+.status-0 { /* Applied */
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+.status-1 { /* InReview */
+  background-color: #fff8e1;
+  color: #ff6f00;
+}
+
+.status-2 { /* Interview */
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.status-3 { /* Rejected */
+  background-color: #ffebee;
+  color: #b71c1c;
+}
+
+.status-4 { /* Accepted */
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  font-weight: bold;
 }
 
 .action-button {
@@ -15,43 +64,44 @@
   font-weight: 500;
   border-radius: 4px;
   padding: 4px 12px;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-}
-
-.edit-button {
-  background-color: #2196F3;
-  color: white;
+  margin-right: 8px;
 }
 
 .add-button {
-  background-color:indianred;
-  color: white;
-  padding: 8px 16px;
-  font-size: 16px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   margin-top: 16px;
 }
 
-/* To improve status dropdown contrast - needs ::ng-deep because it targets Material component internals */
-
-/* Add to your applications-list.component.css */
-
-/* Make sure status text is visible */
-::ng-deep .mat-select-value {
-  color: rgba(0, 0, 0, 0.87) !important;
-  font-weight: normal !important;
-  opacity: 1 !important;
+/* Loading and error styles */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
 }
 
-/* Alternative: Display current status above dropdown */
-.current-status {
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 500;
+  .loading-indicator p {
+    margin-top: 16px;
+    color: #666;
+  }
+
+.error-message {
+  padding: 16px;
+  background-color: #ffebee;
+  color: #c62828;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
-/* Style for status column to ensure proper spacing */
-td.mat-cell:nth-child(3) {
-  padding: 8px 16px;
-  min-width: 120px;
+  .error-message mat-icon {
+    margin-right: 8px;
+  }
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #757575;
 }

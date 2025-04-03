@@ -25,12 +25,25 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Job Description</mat-label>
+          <textarea matInput formControlName="jobDescription" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Location</mat-label>
+          <input matInput formControlName="location">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
           <mat-label>Status</mat-label>
           <mat-select formControlName="status" required>
-            <mat-option value="Applied">Applied</mat-option>
-            <mat-option value="Interview">Interview</mat-option>
-            <mat-option value="Offer">Offer</mat-option>
-            <mat-option value="Rejected">Rejected</mat-option>
+            <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
           </mat-select>
           <mat-error *ngIf="applicationForm.get('status')?.hasError('required')">
             Status is required
@@ -38,6 +51,7 @@
         </mat-form-field>
       </div>
 
+    
       <div class="form-row">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Date Applied</mat-label>

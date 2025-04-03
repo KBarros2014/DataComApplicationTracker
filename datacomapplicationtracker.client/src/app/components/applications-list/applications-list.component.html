@@ -1,10 +1,12 @@
-<h2 class="page-title">Job Applications</h2>
+<h2 class="page-title">Application Tracker</h2>
 
 <div *ngIf="loading" class="loading-indicator">
-  Loading applications...
+  <mat-spinner diameter="40"></mat-spinner>
+  <p>Loading applications...</p>
 </div>
 
 <div *ngIf="error" class="error-message">
+  <mat-icon color="warn">error</mat-icon>
   {{ error }}
 </div>
 
@@ -13,8 +15,10 @@
     <tr>
       <th>Company</th>
       <th>Position</th>
+      <th>Location</th>
       <th>Status</th>
       <th>Date Applied</th>
+      
       <th>Actions</th>
     </tr>
   </thead>
@@ -22,27 +26,27 @@
     <tr *ngFor="let app of applications">
       <td>{{ app.companyName }}</td>
       <td>{{ app.position }}</td>
+      <td>{{ app.location || 'N/A' }}</td>
       <td>
-        <select [(ngModel)]="app.status" (change)="updateStatus(app)" class="status-select">
-          <option value="Applied">Applied</option>
-          <option value="Interview">Interview</option>
-          <option value="Offer">Offer</option>
-          <option value="Rejected">Rejected</option>
-        </select>
+
+    <span [ngClass]="'status-badge status-' + app.status">
+          {{ getStatusLabel(app.status) }}
+        </span>
       </td>
-      <td>{{ app.dateApplied }}</td>
+      <td>{{ app.dateApplied | date:'mediumDate' }}</td>
+     
       <td>
-        <button class="action-button edit-button" [routerLink]="['/edit', app.id]">
+        <button mat-raised-button color="primary" [routerLink]="['/edit', app.id]">
           Edit
         </button>
       </td>
     </tr>
     <tr *ngIf="applications.length === 0">
-      <td colspan="5" class="no-data">No applications found.</td>
+      <td colspan="7" class="no-data">No applications found.</td>
     </tr>
   </tbody>
 </table>
 
-<button class="add-button" routerLink="/add">
+<button mat-raised-button color="accent" routerLink="/add" class="add-button">
   Add Job Application
 </button>

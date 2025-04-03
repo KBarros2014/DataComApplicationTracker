@@ -1,1 +1,111 @@
-<p>edit-application works!</p>
+<div class="edit-application-container">
+  <h2 class="page-title">Edit Job Application</h2>
+
+  <div *ngIf="loading" class="loading-spinner-container">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>Loading application data...</p>
+  </div>
+
+  <div *ngIf="!loading" class="form-container">
+    <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
+      <mat-card>
+        <mat-card-content>
+          <!-- Company Name -->
+          <div class="form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Company Name</mat-label>
+              <input matInput formControlName="companyName" required>
+              <mat-error *ngIf="applicationForm.get('companyName')?.hasError('required')">
+                Company name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Position -->
+          <div class="form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Position</mat-label>
+              <input matInput formControlName="position" required>
+              <mat-error *ngIf="applicationForm.get('position')?.hasError('required')">
+                Position is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Job Description -->
+          <div class="form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Job Description</mat-label>
+              <textarea matInput formControlName="jobDescription" rows="5"></textarea>
+            </mat-form-field>
+          </div>
+
+          <!-- Location -->
+          <div class="form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="location">
+            </mat-form-field>
+          </div>
+
+          <!-- Status -->
+          <div class="form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" class="spaceNeeded" required>
+                <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="applicationForm.get('status')?.hasError('required')">
+                Status is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Outcome -->
+          <div class="form-field outcome-field">
+            <mat-checkbox formControlName="outcome" color="primary">
+              Positive Outcome
+            </mat-checkbox>
+          </div>
+
+          <!-- Date Applied -->
+          <div class="form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Date Applied</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="dateApplied" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-error *ngIf="applicationForm.get('dateApplied')?.hasError('required')">
+                Date applied is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <div class="action-buttons">
+            <button mat-button type="button" (click)="cancel()">CANCEL</button>
+            <button mat-raised-button
+                    color="primary"
+                    type="submit"
+                    [disabled]="applicationForm.invalid || loading">
+              <mat-spinner *ngIf="loading" diameter="20" class="button-spinner"></mat-spinner>
+              <span *ngIf="!loading">UPDATE</span>
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+
+  <!-- Error Message -->
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>
+      <mat-icon color="warn">error</mat-icon>
+      <span>{{ error }}</span>
+    </mat-card-content>
+  </mat-card>
+</div>
