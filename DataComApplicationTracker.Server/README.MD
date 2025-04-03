@@ -109,3 +109,6 @@ If you prefer to run the frontend manually:
 
 
  <img src="https://github.com/KBarros2014/DataComApplicationTracker/blob/main/DataComApplicationTracker.Server/Screenshot%202025-04-04%20104835.png" width="auto" title="hover text">
+
+ <img src="https://github.com/KBarros2014/DataComApplicationTracker/blob/main/DataComApplicationTracker.Server/Screenshot%202025-04-04%20105219.png" width="auto" title="hover text">
+
