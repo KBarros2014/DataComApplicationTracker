@@ -1,0 +1,57 @@
+
+.page-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.applications-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.action-button {
+  min-width: 90px;
+  font-weight: 500;
+  border-radius: 4px;
+  padding: 4px 12px;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+}
+
+.edit-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.add-button {
+  background-color:indianred;
+  color: white;
+  padding: 8px 16px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin-top: 16px;
+}
+
+/* To improve status dropdown contrast - needs ::ng-deep because it targets Material component internals */
+
+/* Add to your applications-list.component.css */
+
+/* Make sure status text is visible */
+::ng-deep .mat-select-value {
+  color: rgba(0, 0, 0, 0.87) !important;
+  font-weight: normal !important;
+  opacity: 1 !important;
+}
+
+/* Alternative: Display current status above dropdown */
+.current-status {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+/* Style for status column to ensure proper spacing */
+td.mat-cell:nth-child(3) {
+  padding: 8px 16px;
+  min-width: 120px;
+}

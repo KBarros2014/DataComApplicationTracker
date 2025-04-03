@@ -1,0 +1,49 @@
+.page-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.application-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px;
+}
+
+.cancel-button {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.error-card {
+  background-color: #ffebee;
+  margin-top: 20px;
+}
+
+  .error-card mat-card-content {
+    display: flex;
+    align-items: center;
+    color: #d32f2f;
+  }
+
+  .error-card mat-icon {
+    margin-right: 8px;
+  }

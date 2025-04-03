@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+/* Add these to your global styles.css file */
+
+/* Improve Mat Select appearance */
+.mat-mdc-select-panel {
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mat-mdc-option {
+  min-height: 40px !important;
+}
+
+/* Calendar styling improvements */
+.mat-calendar {
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mat-calendar-body-cell-content {
+  border-radius: 50% !important;
+}
+
+.mat-calendar-body-selected {
+  background-color: #2196F3 !important;
+  color: white !important;
+}
+
+/* Button styling */
+.mat-mdc-raised-button.mat-primary {
+  background-color: #2196F3 !important;
+}
+
+.mat-mdc-button {
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
